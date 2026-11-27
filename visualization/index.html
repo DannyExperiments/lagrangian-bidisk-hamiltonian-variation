@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Lagrangian bidisk support variation</title>
+<style>
+:root{color-scheme:dark;--bg:#0b151f;--card:#142331;--rule:#354957;--white:#f2fafb;--muted:#b8ced9;--aqua:#76ded3;--gold:#ffd082}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--white);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}
+main{max-width:58rem;margin:auto;padding:clamp(16px,4vw,42px)}
+h1{font-size:clamp(1.8rem,5vw,2.65rem);line-height:1.07;letter-spacing:-.037em;margin:.3rem 0 .8rem}
+h2{font-size:1.12rem;line-height:1.25;margin:0 0 .8rem}
+p{margin:.65rem 0}
+.intro,.caption,.note{color:var(--muted)}
+.panel{border:1px solid var(--rule);border-radius:16px;background:var(--card);padding:clamp(12px,2.5vw,22px);min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;margin-top:1.3rem}
+canvas{width:100%;height:clamp(240px,42vw,330px);display:block}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem .8rem;font-size:.9rem}
+.legend span::before{content:"";display:inline-block;width:.7em;height:.7em;border-radius:50%;margin-right:.4ch;background:var(--dot)}
+.caption,.note{font-size:.9rem}
+label{display:flex;justify-content:space-between;gap:.4em;font-weight:650}
+label output{font-weight:500;color:var(--aqua);font-variant-numeric:tabular-nums}
+input[type=range]{display:block;width:100%;height:32px;accent-color:var(--aqua);margin:0 0 .45rem}
+button{font:inherit;color:var(--white);background:#1c3441;border:1px solid #527382;border-radius:9px;min-height:44px;padding:7px 10px}
+button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:.6rem}
+.rates{display:grid;gap:.1rem;margin:0 0 .7rem;border-bottom:1px solid var(--rule);padding-bottom:.65rem}
+.rates div{display:flex;align-items:baseline;justify-content:space-between;gap:.8rem}
+dt{font-size:.91rem;color:var(--muted)} dd{margin:0;color:var(--gold);font-variant-numeric:tabular-nums;text-align:right}
+aside{margin-top:1.1rem;padding-left:12px;border-left:3px solid var(--aqua)}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>How the bidisk’s support moves</h1>
+    <p class="intro">Explore the first variation from one compactly supported Hamiltonian. A direction has two disk components. Their relative angle determines whether the support moves inward.</p>
+  </header>
+  <div class="grid">
+    <section class="panel" aria-labelledby="plot-title">
+      <h2 id="plot-title">Directional support derivative</h2>
+      <canvas id="plot" role="img" aria-label="Rotatable surface of the support derivative. The zero ridge is at a relative angle of 90 degrees. Negative values extend down from the zero plane."></canvas>
+      <div class="legend">
+        <span style="--dot:#76ded3">Zero ridge</span>
+        <span style="--dot:#ffd082">Selected direction</span>
+        <span style="--dot:#6b99b0">Angle axis</span>
+        <span style="--dot:#bb92ca">Length axis</span>
+      </div>
+      <p class="caption">Plot grid covers 0.02 ≤ s ≤ 0.98 and 0° ≤ θ ≤ 180°. The endpoints s = 0 and s = 1 have nonunique support points.</p>
+    </section>
+    <section class="panel" aria-labelledby="direction-title">
+      <h2 id="direction-title">Choose a direction</h2>
+      <dl class="rates" aria-live="polite">
+        <div><dt>Support derivative</dt><dd id="support">−63/125</dd></div>
+        <div><dt>Full directional width derivative</dt><dd id="width">−126/125</dd></div>
+      </dl>
+      <label for="share">Squared length s = ‖a‖² <output id="share-out" for="share"></output></label>
+      <input id="share" type="range" min=".02" max=".98" step=".01" value=".36">
+      <label for="angle">Relative angle θ <output id="angle-out" for="angle"></output></label>
+      <input id="angle" type="range" min="0" max="180" step="any" value="53.13010235415598">
+      <label for="azimuth">Camera rotation <output id="azimuth-out" for="azimuth"></output></label>
+      <input id="azimuth" type="range" min="0" max="360" step="1" value="30">
+      <div class="controls">
+        <button id="worked" type="button">Worked direction</button>
+        <button id="right-angle" type="button">Orthogonal</button>
+        <button id="rotate" type="button" aria-pressed="false">Auto-rotate</button>
+      </div>
+    </section>
+  </div>
+  <aside aria-label="Spherical average">
+    <strong>Mean-width derivative −4/3.</strong>
+    <p class="note">The plotted height is −(√s + √(1−s)) cos² θ. Opposite support values give the full directional width. On the sphere, s is uniform on [0,1] and independent of the angle. The exact average is derived in the paper.</p>
+  </aside>
+</main>
+<script>
+"use strict";
+const get = id => document.getElementById(id);
+const canvas = get("plot"), ctx = canvas.getContext("2d");
+const share = get("share"), angle = get("angle"), azimuth = get("azimuth");
+const rotate = get("rotate");
+const radians = degrees => degrees * Math.PI / 180;
+const workedAngle = Math.acos(3/5) * 180 / Math.PI;
+let exact = "worked", running = false, animation = 0, lastTime = null, camera = Number(azimuth.value);
+const ns = 18, na = 24;
+const rate = (s, t) => -(Math.sqrt(s) + Math.sqrt(1 - s)) * Math.cos(t) ** 2;
+const mesh = Array.from({length: ns+1}, (_, i) =>
+  Array.from({length: na+1}, (_, j) => {
+    const s = .02 + .96*i/ns, t = j/na;
+    return [s,t,rate(s,Math.PI*t)];
+  })
+);
+function line(points, color, width) {
+  ctx.beginPath();
+  points.forEach(([x,y],i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+  ctx.strokeStyle=color;
+  ctx.lineWidth=width;
+  ctx.stroke();
+}
+function render() {
+  const w=canvas.clientWidth, h=canvas.clientHeight, d=Math.min(devicePixelRatio || 1,2);
+  if (!w || !h) return;
+  if (canvas.width!==Math.round(w*d) || canvas.height!==Math.round(h*d)) {
+    canvas.width=Math.round(w*d);
+    canvas.height=Math.round(h*d);
+  }
+  ctx.setTransform(d,0,0,d,0,0);
+  ctx.clearRect(0,0,w,h);
+  const c=Math.cos(radians(camera)), sn=Math.sin(radians(camera));
+  function project(s,t,z) {
+    const x=1.2*(s-.5), y=t-.5, depth=-x*sn+y*c;
+    return [w/2+w*.56*(x*c+y*sn),h*.29+h*.24*depth-h*.28*z,depth+z/3];
+  }
+  for (let k=0;k<=5;k++) {
+    const v=k/5;
+    line([project(v,0,0),project(v,1,0)],"#354957",1);
+    line([project(0,v,0),project(1,v,0)],"#354957",1);
+  }
+  line([project(0,0,0),project(1,0,0)],"#bb92ca",2);
+  line([project(0,0,0),project(0,1,0)],"#6b99b0",2);
+  const faces=[];
+  for (let i=0;i<ns;i++) {
+    for (let j=0;j<na;j++) {
+      const vertices=[mesh[i][j],mesh[i+1][j],mesh[i+1][j+1],mesh[i][j+1]];
+      const screen=vertices.map(v=>project(...v));
+      faces.push({screen,depth:screen.reduce((sum,v)=>sum+v[2],0),q:-vertices.reduce((sum,v)=>sum+v[2],0)/(4*Math.SQRT2)});
+    }
+  }
+  faces.sort((a,b)=>b.depth-a.depth);
+  for (const {screen,q} of faces) {
+    ctx.beginPath();
+    screen.forEach(([x,y],i)=>i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+    ctx.closePath();
+    ctx.fillStyle="rgb("+Math.floor(32+37*q)+","+Math.floor(80+78*q)+","+Math.floor(90+70*q)+")";
+    ctx.fill();
+    ctx.strokeStyle="#397a82";
+    ctx.lineWidth=.55;
+    ctx.stroke();
+  }
+  line([project(.02,.5,0),project(.98,.5,0)],"#76ded3",2.5);
+  const s=Number(share.value), t=Number(angle.value)/180;
+  const p=project(s,t,rate(s,Math.PI*t));
+  line([project(s,t,0),p],"#ffd082",2);
+  ctx.beginPath();
+  ctx.arc(p[0],p[1],5.5,0,2*Math.PI);
+  ctx.fillStyle="#ffd082";
+  ctx.fill();
+  ctx.strokeStyle="#f2fafb";
+  ctx.lineWidth=1.5;
+  ctx.stroke();
+}
+function result() {
+  const s=Number(share.value), a=Number(angle.value);
+  const value=rate(s,radians(a));
+  get("share-out").value=s.toFixed(2);
+  get("angle-out").value=Number(a.toFixed(2))+"°";
+  const number=(v)=>Math.abs(v)<1e-12 ? "0" : v.toFixed(4).replace("-", "−");
+  get("support").textContent=exact==="worked" ? "−63/125" : number(value);
+  get("width").textContent=exact==="worked" ? "−126/125" : number(2*value);
+  render();
+}
+function updateCamera() {
+  azimuth.value=Math.round(camera);
+  get("azimuth-out").value=Math.round(camera)+"°";
+  render();
+}
+function animate(time) {
+  if (!running) return;
+  if (lastTime!==null) camera=(camera+.027*Math.min(100,time-lastTime))%360;
+  lastTime=time;
+  updateCamera();
+  animation=requestAnimationFrame(animate);
+}
+function stop() {
+  running=false;
+  cancelAnimationFrame(animation);
+  rotate.textContent="Auto-rotate";
+  rotate.setAttribute("aria-pressed","false");
+}
+rotate.addEventListener("click",()=>{
+  if (running) {stop();return;}
+  running=true;
+  lastTime=null;
+  rotate.textContent="Pause rotation";
+  rotate.setAttribute("aria-pressed","true");
+  animation=requestAnimationFrame(animate);
+});
+azimuth.addEventListener("input",()=>{stop();camera=Number(azimuth.value);updateCamera();});
+for (const field of [share,angle]) field.addEventListener("input",()=>{exact="";result();});
+get("worked").addEventListener("click",()=>{share.value=".36";angle.value=workedAngle;exact="worked";result();});
+get("right-angle").addEventListener("click",()=>{angle.value="90";exact="";result();});
+new ResizeObserver(render).observe(canvas);
+get("azimuth-out").value=camera+"°";
+result();
+</script>
+</body>
+</html>

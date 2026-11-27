@@ -1,0 +1,5 @@
+# Mathematical review
+
+The checked theorem uses normalized spherical probability and the full directional width. At directions with two nonzero components, the bidisk has a unique support maximizer and the two-sided difference estimate applies. The two exceptional circles have measure zero. The support difference quotients have a uniform bound from the flow speed, justifying dominated convergence. The stated sign and factor of two follow from the Hamiltonian convention and antipodal invariance.
+
+The independent director review passed at high confidence, with 578 exact rational tests from signed perturbations and independent moment checks. The release replay’s 4,800 rational corner fixtures independently differentiate the expanded quartic and compare it to the projected-velocity formula. The partial Lean certificate proves the algebraic cancellation, projection and quarter-turn identity, as well as the exact rational evaluations. The analytic lemmas are justified in the manuscript. Internally reviewed, not peer reviewed.

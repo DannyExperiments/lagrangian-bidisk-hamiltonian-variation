@@ -1,0 +1,96 @@
+\documentclass[11pt,a4paper]{amsart}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={A decreasing Hamiltonian direction for the Lagrangian bidisk}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\linespread{0.96}
+\DeclareMathSizes{8}{8}{8}{8}
+\DeclareMathSizes{9}{9}{8}{8}
+\DeclareMathSizes{10.95}{10.95}{8}{8}
+\renewcommand{\bibliofont}{\normalsize\raggedright}
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Symp}{\operatorname{Symp}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\title[A Hamiltonian direction for the Lagrangian bidisk]{A decreasing Hamiltonian direction for the Lagrangian bidisk}
+\date{27 November 2026}
+
+\begin{document}
+\begin{abstract}
+Ahn and Kerman ask whether the mean width of the Lagrangian bidisk has a nonzero first variation along a smooth path of symplectomorphisms starting at the identity. A compactly supported Hamiltonian, quartic near the bidisk, gives a Hamiltonian flow whose initial mean-width derivative is $-4/3$ in their normalization. At almost every direction the support point is unique, and its projected velocity is nonpositive. Averaging separates the length and angle variables of a uniform direction on the three-sphere.
+\end{abstract}
+\maketitle
+
+\section{The question and the deformation}
+Let $B=\{(x,y)\in\R^2\times\R^2:\|x\|\le1,\ \|y\|\le1\}$ with the ambient symplectic form $\omega=\sum_{i=1}^2 dx_i\wedge dy_i$. For a compact set $K\subset\R^4$, its support function is $h_K(u)=\max_{p\in K}\ip{u}{p}$. The mean width is
+\[
+ M(K)=\int_{S^3}(h_K(u)+h_K(-u))\,d\sigma(u)
+     =2\int_{S^3}h_K(u)\,d\sigma(u),
+\]
+where $\sigma$ is rotationally invariant probability and the second equality follows from antipodal invariance. This definition also applies when the image of $B$ is nonconvex.
+
+Question~1.13 in Ahn and Kerman \cite[p.~4]{variations} asks whether there is a smooth path $\phi^t$ in $\Symp(\R^4,\omega)$ with $\phi^0=\mathrm{id}$ and a nonzero derivative of $M(\phi^t(B))$ at zero. Proposition~1.12 gives linear local minimality and excludes the bidisk from the unitary orbit of toric convex bodies. Proposition~1.14 uses the Ramos toric model \cite[Theorem~3]{ramos} to obtain a smaller width at a global endpoint. The question concerns a direction at the identity.
+
+\begin{theorem}\label{thm:main}
+Let $\chi$ be smooth with compact support and equal to one on a neighborhood of $B$. With $\iota_{X_H}\omega=dH$, the Hamiltonian
+\[
+ H(x,y)=\tfrac12\chi(x,y)(\|x\|^2-\|y\|^2)(x\cdot y)
+\]
+generates a smooth global flow $\phi^t$ of compactly supported symplectomorphisms and satisfies
+\[
+                  \left.\frac{d}{dt}\right|_{t=0}M(\phi^t(B))=-\frac43 .
+\]
+In particular $M(\phi^t(B))<M(B)$ for all sufficiently small positive $t$.
+\end{theorem}
+
+\section{Support differentiation and the integral}
+Since $X_H=(\nabla_yH,-\nabla_xH)$ is smooth and compactly supported, it is bounded and complete. Cartan's formula gives $\mathcal L_{X_H}\omega=d(dH)=0$, so the flow preserves $\omega$. A point outside the support of $X_H$ stays fixed.
+
+Write $u=(a,b)\in S^3$. The sets $a=0$ and $b=0$ meet $S^3$ in two circles and have spherical measure zero. When both are nonzero the unique support point in direction $u$ is
+\[
+            p_0=(x,y)=(a/\|a\|,b/\|b\|).
+\]
+Indeed, each disk maximizes its linear functional at its unique unit vector in the corresponding direction. Both disk constraints are active at $p_0$. Put $c=x\cdot y$. The factor $\|x\|^2-\|y\|^2$ vanishes at $p_0$ and $\chi$ is locally one. Differentiating the two squared norms gives
+\begin{equation}\label{eq:pointwise}
+ X_H(p_0)=(-cy,-cx),\qquad
+ \ip{u}{X_H(p_0)}=-(\|a\|+\|b\|)c^2 .
+\end{equation}
+
+We justify the derivative at a direction with this unique support point. Fix $u$, choose any maximizer $p_t\in B$ of $\ip{u}{\phi^t(p)}$, and write $h_t=h_{\phi^t(B)}(u)$ and $g(p)=\ip{u}{X_H(p)}$. Uniform convergence of $\phi^t$ to the identity on $B$ implies $p_t\to p_0$. To see this, every subsequential limit of maximizers attains $h_0$ by continuity and uniform convergence, and compactness supplies such a limit whenever convergence fails. The expansion $\phi^t(p)=p+tX_H(p)+O(t^2)$ holds uniformly on $B$ for either sign of $t$, by smoothness of the flow on a compact time interval times $B$. Comparing the value at $p_0$ with the moving maximum, and using $\ip{u}{p_t}\le h_0$, gives
+\[
+ t g(p_0)-C t^2 \ \le\ h_t-h_0\ \le\ t g(p_t)+C t^2 .
+\]
+Subtracting $t g(p_0)$ bounds the error in absolute value by $|t||g(p_t)-g(p_0)|+Ct^2$. This is $o(|t|)$, so the derivative is two-sided and equals \eqref{eq:pointwise}. For all unit directions and $t\ne0$ the difference quotients are bounded by $\sup\|X_H\|$, since
+\[
+ |h_t-h_0|\le\sup_{p\in B}\|\phi^t(p)-p\|
+            \le |t|\sup\|X_H\| .
+\]
+Dominated convergence gives $M'(0)=-2\,\E[(\|a\|+\|b\|)(x\cdot y)^2]$, where the derivative denotes that of $t\mapsto M(\phi^t(B))$.
+
+To evaluate the expectation, start with two independent standard Gaussian vectors in $\R^2$ and divide their concatenation by its length. The result is uniform on $S^3$. Their two independent uniform circle directions are independent of their lengths. The angular average of $(x\cdot y)^2$ is $1/2$, by the quarter-turn identity $\cos^2\theta+\sin^2\theta=1$. The two original squared lengths are independent exponentials with common rate $1/2$. The change of variables from them to their sum $r$ and their first proportion $s$ has Jacobian $r$ and joint density $\tfrac14 r e^{-r/2}$ on $r>0$ and $0<s<1$. Hence $s=\|a\|^2$ is uniform on $[0,1]$ and $\|b\|^2=1-s$. It follows that
+\[
+ \E\|a\|=\E\|b\|=\int_0^1\sqrt{s}\,ds=\frac23,\qquad
+ M'(0)=-2\left(\frac23+\frac23\right)\frac12=-\frac43 .
+\]
+This proves the theorem. It also gives $M(B)=8/3$ from the initial support function $h_B(u)=\|a\|+\|b\|$.
+
+\section{A worked direction and scope}
+Take $x=(1,0)$, $y=(3/5,4/5)$ and $u=((3/5)x,(4/5)y)$. Then $u$ is a unit direction, $c=3/5$ and $h_B(u)=7/5$. Formula~\eqref{eq:pointwise} gives the support derivative $-63/125$, and its value for $-u$ is the same. The full directional width therefore has derivative $-126/125$ at this direction. If the two disk directions are orthogonal, the support derivative is zero. The illustration plots the support derivative over the two direction parameters.
+
+The result is a first variation for the chosen time parameter. The known global endpoint from Proposition~1.14 is also discussed in \cite[after Proposition~3.7]{capacity}. The earlier toric stationarity theorem \cite[Theorem~1.3]{variations} applies to a different class of bodies. The compact-set support argument above handles the nonsmooth bidisk directly.
+
+\section*{Verification and technical disclosure}
+The exact replay differentiates quartic coefficients exactly at rational fixtures. The partial Lean certificate checks the algebraic reductions for the velocity, the angular identity and the rational calculations. The smooth flow, support differentiation and spherical integration are proved in the text. Internally reviewed, not peer reviewed.
+
+Under human direction, ChatGPT Astra~6.2 (OpenAI) generated the discovery proof and research packet. OpenAI Codex independently reviewed the mathematics. GPT-6.2 Sol (OpenAI) checked literature and prepared the manuscript, exact replay, partial Lean certificate and illustration. DannyExperiments is the preferred citation identity.
+
+\begin{thebibliography}{9}
+\bibitem{variations} J. Ahn and E. Kerman, \emph{Symplectic variations of convex bodies and the mean width}, \href{https://arxiv.org/abs/2311.02870v3}{arXiv:2311.02870v3}, 2026.
+\bibitem{capacity} J. Ahn and E. Kerman, \emph{On the symplectic capacity and mean width of convex bodies}, \href{https://arxiv.org/abs/2602.07220v1}{arXiv:2602.07220v1}, 2026.
+\bibitem{ramos} V. G. B. Ramos, \emph{Symplectic embeddings and the Lagrangian bidisk}, Duke Math. J. \textbf{166} (2017), 1703--1738. \href{https://doi.org/10.1215/00127094-0000011X}{DOI:10.1215/00127094-0000011X}.
+\end{thebibliography}
+\end{document}

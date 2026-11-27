@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "Cite this version of the research release."
+type: software
+title: "A decreasing Hamiltonian direction for the Lagrangian bidisk"
+authors:
+  - name: "DannyExperiments"
+version: "1.0.0"
+date-released: 2026-11-27
+doi: "10.5281/zenodo.24574100"
+url: "https://doi.org/10.5281/zenodo.24574100"
+repository-code: "https://github.com/DannyExperiments/lagrangian-bidisk-hamiltonian-variation"
+keywords:
+  - "Lagrangian bidisk"
+  - "mean width"
+  - "Hamiltonian flow"
+  - "symplectic geometry"
+  - "first variation"
+  - "support function"
+preferred-citation:
+  type: software
+  title: "A decreasing Hamiltonian direction for the Lagrangian bidisk"
+  authors:
+    - name: "DannyExperiments"
+  version: "1.0.0"
+  date-released: 2026-11-27
+  doi: "10.5281/zenodo.24574100"
+  url: "https://doi.org/10.5281/zenodo.24574100"
+  repository-code: "https://github.com/DannyExperiments/lagrangian-bidisk-hamiltonian-variation"

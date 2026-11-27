@@ -1,0 +1,4 @@
+Exact quartic coefficients at 4800 corner fixtures
+Orthogonal pairs with zero derivative: 192
+Worked support derivative = -63/125; full directional derivative = -126/125
+Normalized initial mean width = 8/3; normalized mean-width derivative = -4/3

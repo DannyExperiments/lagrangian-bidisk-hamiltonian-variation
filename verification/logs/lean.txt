@@ -1,0 +1,5 @@
+'BidiskVariation.cornerGradient' depends on axioms: [propext, Classical.choice, Quot.sound]
+'BidiskVariation.supportVelocity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'BidiskVariation.quarterTurn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'BidiskVariation.workedDirection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'BidiskVariation.normalizedMean' depends on axioms: [propext, Classical.choice, Quot.sound]

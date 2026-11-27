@@ -1,0 +1,30 @@
+{
+  "title": "A decreasing Hamiltonian direction for the Lagrangian bidisk",
+  "upload_type": "software",
+  "publication_date": "2026-11-27",
+  "version": "1.0.0",
+  "creators": [
+    {
+      "name": "DannyExperiments"
+    }
+  ],
+  "keywords": [
+    "Lagrangian bidisk",
+    "mean width",
+    "Hamiltonian flow",
+    "symplectic geometry",
+    "first variation",
+    "support function"
+  ],
+  "description": "<p>A compactly supported autonomous Hamiltonian gives the Lagrangian bidisk an initial mean-width derivative of −4/3 under spherical probability normalization of the full directional width. The result answers Ahn and Kerman’s Question 1.13 with a smooth path of global standard symplectomorphisms through the identity.</p><p>The Hamiltonian couples the difference of squared disk radii to their scalar product. For almost every direction the support point is unique. Compactness gives convergence of the maximizing point and a two-sided derivative. Its projected velocity is nonpositive, and dominated convergence reduces the mean-width derivative to independent spherical length and angle averages.</p><p>Ahn and Kerman established local minimality under linear maps and a global decrease from Ramos’s toric model. Ahn’s dissertation already realizes a smaller-width endpoint by Hamiltonian extension. This release gives a decreasing first-order direction at the identity. The rate belongs to the specified time normalization.</p><p>Internally reviewed, not peer reviewed. The standard-library replay independently differentiates the quartic at 4,800 exact rational corner fixtures. The partial Lean certificate checks three algebraic identities and two rational calculations. The analytic flow, support and integration arguments are proved in the manuscript.</p><p>Under human direction, ChatGPT Astra 6.2 (OpenAI) generated the discovery proof and research packet. OpenAI Codex independently reviewed the mathematics. GPT-6.2 Sol (OpenAI) checked primary sources and prepared the manuscript, exact replay, partial Lean certificate and illustration. DannyExperiments is the preferred citation identity. No AI system is proposed as an author.</p><p>Release v1.0.0. https://github.com/DannyExperiments/lagrangian-bidisk-hamiltonian-variation/releases/tag/v1.0.0</p>",
+  "access_right": "open",
+  "license": "other-closed",
+  "notes": "All rights reserved. Publicly downloadable files are supplied without a repository-wide reuse license.",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/DannyExperiments/lagrangian-bidisk-hamiltonian-variation/releases/tag/v1.0.0",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ]
+}
